@@ -12,10 +12,12 @@
   
 # How To Use It
 ##### Download or clone the project, and open project in android studios. Once loaded select run to load app onto emulator or phone.
-###### Once the application is ran on emulator or phone, you can immediatly start drawing with your fingertips. If you tap the Floating Action Button (FAB) a color picker dialog should appear, allowing you to select a color by RGB or by HEX #
 
-`
-
+  * Once the application is ran on emulator or phone, you can immediatly start drawing with your fingertips. 
+  * If you tap the Floating Action Button (FAB) a color picker dialog should appear, allowing you to select a color by RGB or by HEX #
+  * The X (button) on the Top App Bar allows you the clear the Canvas
+  * The 2 arrows at the top allows you to undo or redo a drawing
+  * The settings icon, once tapped, allows you to edit brush size or opacity
 
 ``` 
 Color picker functionality: Android Material Color Picker Dialog - A simple, minimalistic and beautiful dialog color 
