@@ -19,13 +19,18 @@
   * The 2 arrows at the top allows you to undo or redo a drawing
   * The settings icon, once tapped, allows you to edit brush size or opacity
 
-#### Work Cited
+## Work Cited
+##### GITHUB
 
 ``` 
 Color picker functionality: Android Material Color Picker Dialog - A simple, minimalistic and beautiful dialog color 
 picker for Android 4.1+ devices. This color picker is easy-to-use and easy-to-integrate in your application to let 
 users of your app choose color in a simple way. by: https://github.com/Pes8/android-material-color-picker-dialog
 ```
+##### STACKOVERFLOW
+###### This code is used to display dialogs to edit information like brush size and opacity
+[Link to stackoverflow for Alert Dialog SeekBar code](http://stackoverflow.com/questions/6424032/android-seekbar-in-dialog)
+
 ``` Java
  AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
