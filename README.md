@@ -11,8 +11,7 @@
   
   
 # How To Use It
-##### Download or clone the project, and open project in android studios
-
+##### Download or clone the project, and open project in android studios. Once loaded select run to load app onto emulator or phone.
 
 
 
