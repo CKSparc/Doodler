@@ -5,14 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
 import android.util.AttributeSet;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by johndoe on 11/3/16.
@@ -99,6 +94,12 @@ class Stroke {
 
 class MyPaint extends Paint {
 
+    /**
+     *
+     * @param r
+     * @param g
+     * @param b
+     */
     public MyPaint(int r, int g, int b) {
         this.setColor(Color.rgb(r,g,b));
         this.setAntiAlias(true);

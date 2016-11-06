@@ -18,18 +18,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.Stack;
 
 
 public class MainActivity extends AppCompatActivity {
+
     private DoodleView canvasView;
     public static List<Stroke> strokes;
-    public static Queue<Stroke> undoedStrokes;
+    public static Stack<Stroke> undoedStrokes;
+
     int brush_size = 10;
     int brush_opacity = 255;
 
+    // RGB Colors - for when users change colors
     int r = 0;
     int g = 0;
     int b = 0;
@@ -39,16 +41,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        canvasView = (DoodleView) findViewById(R.id.doodle_view);
+        canvasView = (DoodleView) findViewById(R.id.doodle_view); // Canvas reference
 
+        // Initializing the list of strokes and undo strokes
         strokes = new ArrayList<>();
-        undoedStrokes = new LinkedList<>();
+        undoedStrokes = new Stack<>();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeColor();
+                changeColor(); // FAB that creates the dialog view that users can change colors
             }
         });
 
@@ -63,67 +66,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-                alert.setTitle("Edit Brush Opacity");
-                alert.setMessage("Slide left or right to change brush opacity");
-
-                LinearLayout linear = new LinearLayout(this);
-
-                linear.setOrientation(1);
-
-                SeekBar seek = new SeekBar(this);
-                seek.setMax(255);
-                seek.setProgress(brush_opacity);
-
-                final TextView text = new TextView(this);
-                text.setText("Brush Opacity: 255");
-                text.setPadding(32, 16, 10, 10);
-
-                seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        brush_opacity = progress;
-                        text.setText("Brush Opacity: " + progress + "");
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    }
-                });
-
-                linear.addView(seek);
-                linear.addView(text);
-
-                alert.setView(linear);
-
-
-                alert.setPositiveButton("Ok",new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog,int id)
-                    {
-                        DoodleView._paintDoodle = new MyPaint(brush_opacity,r,g,b);
-                    }
-                });
-
-                alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog,int id)
-                    {
-                        Toast.makeText(getApplicationContext(), "Canceled",Toast.LENGTH_LONG).show();
-                    }
-                });
-
-                alert.show();
+                changeOpacity();
                 return true;
 
             case R.id.action_delete:
@@ -146,73 +91,13 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_redo:
                     if(undoedStrokes.size() > 0){
-                        strokes.add(undoedStrokes.poll());
+                        strokes.add(undoedStrokes.pop());
                         canvasView.invalidate();
                     }
                 return true;
 
             case R.id.action_edit_size:
-
-                alert = new AlertDialog.Builder(this);
-
-                alert.setTitle("Edit Brush Size");
-                alert.setMessage("Slide left or right to change brush size");
-
-                linear = new LinearLayout(this);
-
-                linear.setOrientation(1);
-
-                seek = new SeekBar(this);
-                seek.setMax(50);
-                seek.setProgress(brush_size);
-
-                final TextView txt = new TextView(this);
-                txt.setText("Brush Size: 10mm");
-                txt.setPadding(32, 16, 10, 10);
-
-                seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        brush_size = progress;
-                        txt.setText("Brush Size: " + progress + "mm");
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    }
-                });
-
-                linear.addView(seek);
-                linear.addView(txt);
-
-                alert.setView(linear);
-
-
-                alert.setPositiveButton("Ok",new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog,int id)
-                    {
-                        DoodleView._paintDoodle = new MyPaint(r,g,b);
-                        DoodleView._paintDoodle.setBrushSize(brush_size);
-                    }
-                });
-
-                alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog,int id)
-                    {
-                        Toast.makeText(getApplicationContext(), "Canceled",Toast.LENGTH_LONG).show();
-                    }
-                });
-
-                alert.show();
-
+                changeBrushSize();
                 return true;
 
             default:
@@ -221,6 +106,130 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void changeBrushSize() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Edit Brush Size");
+        alert.setMessage("Slide left or right to change brush size");
+
+        LinearLayout linear = new LinearLayout(this);
+
+        linear.setOrientation(1);
+
+        SeekBar seek = new SeekBar(this);
+        seek.setMax(50);
+        seek.setProgress(brush_size);
+
+        final TextView txt = new TextView(this);
+        txt.setText("Brush Size: 10mm");
+        txt.setPadding(32, 16, 10, 10);
+
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                brush_size = progress;
+                txt.setText("Brush Size: " + progress + "mm");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        linear.addView(seek);
+        linear.addView(txt);
+
+        alert.setView(linear);
+
+
+        alert.setPositiveButton("Ok",new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog,int id)
+            {
+                DoodleView._paintDoodle = new MyPaint(r,g,b);
+                DoodleView._paintDoodle.setBrushSize(brush_size);
+            }
+        });
+
+        alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog,int id)
+            {
+                Toast.makeText(getApplicationContext(), "Canceled",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        alert.show();
+    }
+
+    private void changeOpacity() {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Edit Brush Opacity");
+        alert.setMessage("Slide left or right to change brush opacity");
+
+        LinearLayout linear = new LinearLayout(this);
+
+        linear.setOrientation(1);
+
+        SeekBar seek = new SeekBar(this);
+        seek.setMax(255);
+        seek.setProgress(brush_opacity);
+
+        final TextView text = new TextView(this);
+        text.setText("Brush Opacity: 255");
+        text.setPadding(32, 16, 10, 10);
+
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                brush_opacity = progress;
+                text.setText("Brush Opacity: " + progress + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        linear.addView(seek);
+        linear.addView(text);
+
+        alert.setView(linear);
+
+
+        alert.setPositiveButton("Ok",new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog,int id)
+            {
+                DoodleView._paintDoodle = new MyPaint(brush_opacity,r,g,b);
+            }
+        });
+
+        alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog,int id)
+            {
+                Toast.makeText(getApplicationContext(), "Cancelled",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        alert.show();
     }
 
     private void changeColor() {
