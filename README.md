@@ -15,12 +15,13 @@
 
   * Once the application is ran on emulator or phone, you can immediatly start drawing with your fingertips. 
   ![alt text](https://github.com/CKSparc/Doodler/blob/master/app/Screen%20Shot%202016-11-06%20at%206.35.22%20PM.png "Screenshot of blank canvas")
-  
   * If you tap the Floating Action Button (FAB) a color picker dialog should appear, allowing you to select a color by RGB or by HEX #
+   ![alt text](https://github.com/CKSparc/Doodler/blob/master/app/Screen%20Shot%202016-11-06%20at%206.44.50%20PM.png "Screenshot of Color Picker")
   * The X (button) on the Top App Bar allows you the clear the Canvas
   * The 2 arrows at the top allows you to undo or redo a drawing
   * The settings icon, once tapped, allows you to edit brush size or opacity
-
+  ![alt text](https://github.com/CKSparc/Doodler/blob/master/app/Screen%20Shot%202016-11-06%20at%206.44.21%20PM.png "Screenshot of Color Picker")
+  
 ## Work Cited
 ##### GITHUB
 ###### By: [Link to code on Github](https://github.com/Pes8/android-material-color-picker-dialog)
